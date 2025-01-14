@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confused Worker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .response {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+    <script>
+        function askQuestion() {
+            const responses = [
+                ["Okay, organizing files... Wait, which files should I organize?", "Sure, I'll organize the files. By the way, do you think pineapple belongs on pizza?", "Organizing files... but first, did you know that the earth is not flat?", "Files organized! Just kidding, I forgot what I was doing."],
+                ["Sending emails... Oh no, I don't have any email addresses. Could you provide them?", "Emails are on the way! By the way, have you seen my stapler?", "Sending emails... but what if we used carrier pigeons instead?", "Emails sent! Wait, who was I supposed to email again?"],
+                ["Making coffee... Do you prefer regular or decaf?", "Coffee coming right up! Do you want some donuts with that?", "Brewing coffee... but what if I spill it on my keyboard?", "Coffee is ready! Or maybe it's just water with some color."],
+                ["Scheduling meetings... Who should I invite? What time works best for you?", "Meetings scheduled! But wait, why do we have meetings again?", "Setting up meetings... but did you know that cats have five toes on their front paws?", "Meetings are all set! Or maybe I just booked a vacation."],
+                ["Alright, I'll exit now. Have a great day!"]
+            ];
+
+            const choice = prompt("Can you help me figure out what to do?\n1. Organize files\n2. Send emails\n3. Make coffee\n4. Schedule meetings\n5. Exit\nPlease enter the number of your choice:");
+            if (choice < 1 || choice > 5) {
+                const invalidResponses = ["I'm not sure what you mean. Could you clarify?", "Huh? I'm a bit lost, can you explain that again?", "What was that? I think I was daydreaming.", "I don't understand. Maybe I need more coffee."];
+                speak(invalidResponses[Math.floor(Math.random() * invalidResponses.length)]);
+                return;
+            }
+
+            const responseIndex = Math.floor(Math.random() * 4);
+            const responseText = responses[choice - 1][responseIndex];
+            speak(responseText);
+            displayResponse(responseText);
+        }
+
+        function speak(text) {
+            const msg = new SpeechSynthesisUtterance(text);
+            msg.voice = speechSynthesis.getVoices().find(voice => voice.name === "Google UK English Male");
+            msg.volume = 0.5;
+            speechSynthesis.speak(msg);
+        }
+
+        function displayResponse(text) {
+            const responseDiv = document.getElementById('response');
+            responseDiv.innerHTML = text;
+            responseDiv.classList.add('animate');
+            setTimeout(() => {
+                responseDiv.classList.remove('animate');
+            }, 1000);
+        }
+
+        window.onload = askQuestion;
+    </script>
+</head>
+<body>
+    <h1>Confused Worker Program</h1>
+    <p>This is a simple program that simulates a confused office worker. Click the button below to start the interaction.</p>
+    <button onclick="askQuestion()">Start Interaction</button>
+    <div id="response" class="response"></div>
+</body>
+</html>
